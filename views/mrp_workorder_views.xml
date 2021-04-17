@@ -11,8 +11,8 @@
           <field name="origin" string="Origen" />
           <field name="order_ref" />
           <button name="action_origin" type="object" string="Compute Origin" icon="fa-refresh"
+            attrs="{'invisible': [('origin', '!=', False)]}"
           />
-            <!--attrs="{'invisible': [('origin', '!=', False)]}"-->
         </field>
       </field>
     </record>
@@ -27,8 +27,8 @@
           <field name="origin" string="Origen" readonly="True"/>
           <field name="order_ref" readonly="1" />
           <button name="action_origin" type="object" string="Compute Origin" icon="fa-refresh"
+            attrs="{'invisible': [('origin', '!=', False)]}"
           />
-            <!--attrs="{'invisible': [('origin', '!=', False)]}"-->
         </xpath>
       </field>
     </record>
