@@ -16,6 +16,7 @@
         'mrp',
     ],
     "data": [
+        'views/mrp_production_view.xml',
         'views/mrp_workorder_views.xml',
     ],
     "demo": [

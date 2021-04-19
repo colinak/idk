@@ -5,53 +5,32 @@ from odoo import models, fields, api, _
 import logging
 _logger = logging.getLogger(__name__)
 
-class MrpWorkorder(models.Model):
-    _inherit = 'mrp.workorder'
-    _description = 'Ordenes de Trabajo'
+class MrpProduction(models.Model):
+    _inherit = 'mrp.production'
+    _description = 'Ordenes de Produccion'
 
+    @api.depends('origin')
+    def _compute_order_ref(self):
+        order_ref = self.env['sale.order'].search([
+            ('name', '=', self.origin)    
+        ])
+        _logger.info("Order: " + str(order_ref))
+        ref_order = self.env['mrp.production'].search([
+            ('name', '=', self.origin)    
+        ])
+        _logger.info("REF: " + str(ref_order))
+        if order_ref.client_order_ref != False:
+            _logger.info("IF: " + str(order_ref))
+            self.order_ref = order_ref.client_order_ref
+        elif ref_order != False:
+            _logger.info("ELIF: " + str(ref_order))
+            self.order_ref = ref_order.order_ref
 
-    # Asignar Orden de Regerencia y Orden de Produccion
-    def action_origin(self):
-        if self.production_id:
-            root = False
-            derivation = self.production_id.origin
-            origin = None
-            while root == False:
-                order_production = self.env['mrp.production'].search(
-                    [('name', '=', derivation)]
-                )
-                if order_production.name == False:
-                    if origin:
-                        self.origin = origin
-                        
-                        ref_order = self.env['sale.order'].search(
-                            [('name', '=', derivation)]
-                        )
-                        self.order_ref = ref_order.client_order_ref
-
-                        root = True
-                    else:
-                        self.origin = self.production_id.name
-
-                        ref_order = self.env['sale.order'].search(
-                            [('name', '=', derivation)]
-                        )
-                        self.order_ref = ref_order.client_order_ref
-
-                        root = True
-                else:
-                    origin = order_production.name
-                    derivation = order_production.origin
-                    _logger.info("Ori: " + str(origin))
-
-
-
-    origin = fields.Char(
-        string="Orden de Producción",
-        # compute=_compute_origin,
-        help="Referencia al documento principal que genero esta orden de trabajo."
-    )
+    
     order_ref = fields.Char(
-        string="Referencia Interna",
-        help="Referencia Interna de la Orden de la Orden de Venta del Cliente"
+        string="Referencia de Cliete",
+        compute="_compute_order_ref",
+        store=True,
+        readonly=False,
+        help="N° de Referencia del Cliente"
     )

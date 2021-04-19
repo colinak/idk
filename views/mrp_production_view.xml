@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <!--view form mrp production-->
+    <record id="inherit_mrp_production_form_view" model="ir.ui.view">
+      <field name="name">inherit.mrp.production.form</field>
+      <field name="model">mrp.production</field>
+      <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+      <field name="arch" type="xml">
+        <field name="origin" position="after">
+          <field name="order_ref"/>
+        </field>
+      </field>
+    </record>
+
+    <!--view tree mrp production-->
+    <record id="inherit_mrp_production_tree_view" model="ir.ui.view">
+      <field name="name">inherit.mrp.production.tree</field>
+      <field name="model">mrp.production</field>
+      <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+      <field name="arch" type="xml">
+        <field name="origin" position="after">
+          <field name="order_ref"/>
+        </field>
+      </field>
+    </record>
+  </data>
+</odoo>
