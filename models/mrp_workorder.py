@@ -42,7 +42,6 @@ class MrpWorkorder(models.Model):
                 else:
                     origin = order_production.name
                     derivation = order_production.origin
-                    _logger.info("Ori: " + str(origin))
 
 
     @api.depends('origin')
@@ -54,19 +53,14 @@ class MrpWorkorder(models.Model):
             self.order_ref = order_ref.client_order_ref
 
 
-    # root_origin = fields.Char(
-        # string=u"Origen Raíz",
-
-    # )
-
     origin = fields.Char(
         string="Orden de Producción",
-        # compute=_compute_origin,
+        related="production_id.root_origin",
         help="Referencia al documento principal que genero esta orden de trabajo."
     )
     order_ref = fields.Char(
         string="Referencia Interna",
-        # related="production_id.order_ref",
+        related="production_id.order_ref",
         help="Referencia Interna de la Orden de la Orden de Venta del Cliente"
     )
 
